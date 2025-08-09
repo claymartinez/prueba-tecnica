@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <title>Lista de empleados</title>
+  @if (file_exists(public_path('build/manifest.json')))
   @vite(['resources/css/app.css','resources/js/app.js'])
+  @else
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  @endif
 
 </head>
 <style>
@@ -18,8 +24,8 @@
 <body class="bg-light">
   <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-  <h1 class="h3 mb-0"><i class="fa-solid fa-users me-2"></i>Lista de empleados</h1>
-  <a class="btn btn-primary" href="{{ route('empleados.create') }}"><i class="fa-solid fa-user-plus me-1"></i> Crear</a>
+      <h1 class="h3 mb-0"><i class="fa-solid fa-users me-2"></i>Lista de empleados</h1>
+      <a class="btn btn-primary" href="{{ route('empleados.create') }}"><i class="fa-solid fa-user-plus me-1"></i> Crear</a>
     </div>
 
     @if (session('status'))
