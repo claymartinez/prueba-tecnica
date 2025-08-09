@@ -2,6 +2,8 @@ import * as bootstrap from "bootstrap";
 import "./bootstrap";
 import $ from "jquery";
 import "jquery-validation";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 $(function () {
     // Auto-dismiss de alertas con atributo data-auto-dismiss
