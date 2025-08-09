@@ -1,12 +1,26 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import "bootstrap";
+import * as bootstrap from "bootstrap";
 import "./bootstrap";
 import $ from "jquery";
 import "jquery-validation";
 
-// ...existing code...
 $(function () {
+    // Auto-dismiss de alertas con atributo data-auto-dismiss
+    document.querySelectorAll(".alert[data-auto-dismiss]").forEach((el) => {
+        const ms = parseInt(el.getAttribute("data-auto-dismiss"), 10);
+        if (ms > 0) {
+            setTimeout(() => {
+                const instance = bootstrap.Alert.getOrCreateInstance(el);
+                instance.close();
+            }, ms);
+        }
+    });
+
+    // Enfocar primer campo inválido si existen errores del lado servidor
+    const firstInvalid = document.querySelector("#formEmpleado .is-invalid");
+    if (firstInvalid) {
+        firstInvalid.focus({ preventScroll: false });
+    }
+
     // Método: solo letras y espacios (sin tildes)
     $.validator.addMethod(
         "letrasEspacios",
@@ -59,7 +73,7 @@ $(function () {
             errorPlacement(error, element) {
                 if (element.is(":radio")) {
                     error.addClass("d-block");
-                    element.closest(".mb-3").append(error);
+                    element.closest(".col-sm-9").append(error);
                 } else if (element.attr("name") === "roles[]") {
                     error.addClass("d-block");
                     $("#rolesGroup").append(error);

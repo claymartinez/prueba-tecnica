@@ -5,29 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <title>Lista de empleados</title>
-  <!-- Preload CSS principal para reducir FOUC -->
-  <link rel="preload" href="{{ vite_asset('resources/js/app.js') }}" as="script">
-  @vite(['resources/css/app.css'])
-  @vite(['resources/js/app.js'])
-  <style>
-    /* CSS crítico mínimo */
-    body { background:#f8f9fa; }
-    .table-light th { min-width:100px; white-space:nowrap; }
-  </style>
+  @vite(['resources/css/app.css','resources/js/app.js'])
+
 </head>
+<style>
+  .table-light th {
+    min-width: 100px;
+    white-space: nowrap;
+  }
+</style>
 
 <body class="bg-light">
   <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h1 class="h3 mb-0"><i class="fa-solid fa-users me-2"></i>Lista de empleados</h1>
-      <a class="btn btn-primary" href="{{ route('empleados.create') }}"><i class="fa-solid fa-plus me-1"></i> Crear</a>
+  <h1 class="h3 mb-0"><i class="fa-solid fa-users me-2"></i>Lista de empleados</h1>
+  <a class="btn btn-primary" href="{{ route('empleados.create') }}"><i class="fa-solid fa-user-plus me-1"></i> Crear</a>
     </div>
 
     @if (session('status'))
-    <div class="alert alert-success"><i class="fa-regular fa-circle-check me-2"></i>{{ session('status') }}</div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert" data-auto-dismiss="5000">
+      <i class="fa-regular fa-circle-check me-2"></i>{{ session('status') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
     @endif
     @if (session('error'))
-    <div class="alert alert-danger"><i class="fa-regular fa-circle-xmark me-2"></i>{{ session('error') }}</div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" data-auto-dismiss="7000">
+      <i class="fa-regular fa-circle-xmark me-2"></i>{{ session('error') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
     @endif
 
     <div class="table-responsive">
@@ -79,6 +84,17 @@
         </tbody>
       </table>
     </div>
+
+    @if(method_exists($empleados, 'links'))
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <div class="text-muted small">
+        Mostrando {{ $empleados->firstItem() ?? 0 }}-{{ $empleados->lastItem() ?? 0 }} de {{ $empleados->total() ?? count($empleados) }}
+      </div>
+      <div>
+        {{ $empleados->links('pagination::bootstrap-5') }}
+      </div>
+    </div>
+    @endif
   </div>
 </body>
 

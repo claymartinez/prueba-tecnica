@@ -5,15 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <title>{{ $empleado ? 'Editar' : 'Crear' }} empleado</title>
-  @vite(['resources/css/app.css'])
-  @vite(['resources/js/app.js'])
+  @vite(['resources/css/app.css','resources/js/app.js'])
+
   <style>
-    /* CSS crítico mínimo para evitar parpadeo sin esperar al bundle */
-    body { background:#f8f9fa; }
-    .form-header { background:#e9f2fb; border:1px solid #cfe0f5; border-radius:.25rem; padding:.75rem 1rem; }
-    .label-col { font-weight:600; }
-    /* Ajuste móvil: etiquetas alineadas a la izquierda debajo de sm */
-    @media (max-width:575.98px){ #formEmpleado .text-sm-end { text-align:left !important; } }
+    .form-header {
+      background: #e9f2fb;
+      border: 1px solid #cfe0f5;
+      border-radius: .25rem;
+      padding: .75rem 1rem;
+    }
+
+    .label-col {
+      font-weight: 600;
+    }
   </style>
 </head>
 
@@ -23,8 +27,23 @@
 
     <div class="form-header mb-4">Los campos con asteriscos (*) son obligatorios</div>
 
+    @if (session('status'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert" data-auto-dismiss="5000">
+      <i class="fa-regular fa-circle-check me-2"></i>{{ session('status') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+    @endif
+    @if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" data-auto-dismiss="7000">
+      <i class="fa-regular fa-circle-xmark me-2"></i>{{ session('error') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+    @endif
     @if ($errors->any())
-    <div class="alert alert-danger"><i class="fa fa-exclamation-triangle me-2"></i>Corrige los errores.</div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" data-auto-dismiss="8000" data-validation-errors="true">
+      <i class="fa fa-exclamation-triangle me-2"></i>Corrige los errores.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
     @endif
 
     <form id="formEmpleado" method="POST" action="{{ $empleado ? route('empleados.update',$empleado) : route('empleados.store') }}" novalidate>
